@@ -6,6 +6,17 @@
 
 Python project evaluating LLMs for document hyperlinks
 
+## Things to do
+
+- Scrape a few recent articles to build up a validation set
+- Persist to interim data file
+- Check to see how many links are external (FYI)
+- Check to see if there are Gaurdian articles that are not in the dataset
+- Do a snowball sample until some reasonable place to stop
+- Set up vector DB with date as meta-data
+- Set up LLM prompt to try to guess article to link to from text snippet
+- Set up evaluation
+
 ## Project Organization
 
 ```
@@ -62,3 +73,13 @@ Python project evaluating LLMs for document hyperlinks
 ## Kaggle Authentication
 
 Requires Kaggle [key](https://www.kaggle.com/docs/api#authentication) to be exported to environment to access data.
+
+## Setup
+
+1. Create empty directory (hot-links) in this case
+2. Run ccds in directory
+3. Create empty Git repo
+4. Push entire directory into repo
+5. Creat empty Codepsace from repo
+6. Create venv in VS Code from requirements.txt
+
