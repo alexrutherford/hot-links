@@ -25,6 +25,7 @@ requirements:
 clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
+	rm data/raw/*
 
 
 ## Lint using ruff (use `make format` to do formatting)

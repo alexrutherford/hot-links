@@ -59,3 +59,6 @@ Python project evaluating LLMs for document hyperlinks
 
 --------
 
+## Kaggle Authentication
+
+Requires Kaggle [key](https://www.kaggle.com/docs/api#authentication) to be exported to environment to access data.
