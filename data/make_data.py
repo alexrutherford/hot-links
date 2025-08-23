@@ -1,11 +1,14 @@
 import re
 import sys
+import dateutil
 import requests
 from bs4 import BeautifulSoup
 import json
 import logging
+import pandas as pd
+import dateutil
 
-logging.basicConfig(filename='example.log', filemode='a', level=logging.DEBUG)
+logging.basicConfig(filename='out.log', filemode='a', level=logging.DEBUG)
 
 logger = logging.getLogger(__name__)
 
@@ -28,9 +31,12 @@ def save_links(blob):
         json.dump(blob, f)
 
 
-def get_links(blob):
+def get_links(blob,metadata = False, v = False):
     url = blob['webUrl']
     id = str(blob['id'])
+    
+    if v:print(url)
+    
 
     logging.debug('URL: {:s}'.format(url))
     logging.debug('ID: {:s}'.format( id))
@@ -42,6 +48,12 @@ def get_links(blob):
     res['id'] = id
     res['links'] = []
     
+    try:
+        res['bodyContent'] = soup.find('div', {'data-gu-name': "body"}).get_text(strip=True)
+    except:
+        res['bodyContent'] = ''
+        logging.debug('No body content found')
+
     main = soup.find('main')
     if main:
         soup = main
@@ -49,4 +61,46 @@ def get_links(blob):
     for a in soup.find_all('a', href=True):
         res['links'].append({'href': a['href'], 'link': a.get_text(strip=True)})
 
-    return res
+    logging.debug('Got links ({:d})'.format(len(res['links'])))
+
+    if metadata:
+       
+        try:
+            res['date'] = soup.find('span', class_=['dcr-u0h1qy','dcr-lp0nif']).get_text(strip=True)
+            # If date is missing page is not a proper article
+            # e.g. https://www.theguardian.com/football/boavista
+            
+            res['date'] = re.sub(r'\.',':',res['date'])
+            res['date'] = dateutil.parser.parse(res['date'][0:-4], dayfirst = True)
+        except Exception as e:
+            logging.debug('Date error',e)
+            
+            
+            try:
+                res['date'] = soup.find('div', class_=['dcr-u0h1qy','dcr-lp0nif']).get_text(strip=True)
+                logging.debug('div found')
+            except:
+                res['date'] = pd.NaT     
+        
+        logging.debug('Date done')
+
+        
+        try:
+            res['title'] = soup.find('h1').get_text(strip=True) # , class_=['dcr-uc7bn6','dcr-wli6lg','dcr-1vit58r']
+        except:
+            logging.debug('No h1 found')
+            
+            try:
+                res['title'] = soup.find('div', class_=['dcr-uc7bn6','dcr-wli6lg','dcr-1vit58r']).get_text(strip=True)
+                logging.debug('Found div')
+            except:
+                logging.debug('No div found')
+                res['title'] = ''
+
+        
+        # TODO Add section etc later
+        
+    if not metadata:
+        return res
+    else:
+        return res
