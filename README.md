@@ -8,11 +8,11 @@ Python project evaluating LLMs for document hyperlinks
 
 ## Things to do
 
-- Scrape a few recent articles to build up a validation set
-- Persist to interim data file
+- ~~Scrape a few recent articles to build up a validation set~~
+- ~~Persist to interim data file~~
 - Check to see how many links are external (FYI)
-- Check to see if there are Gaurdian articles that are not in the dataset
-- Do a snowball sample until some reasonable place to stop
+- ~~Check to see if there are Guardian articles that are not in the dataset~~
+- ~~Do a snowball sample until some reasonable place to stop~~
 - Set up vector DB with date as meta-data
 - Set up LLM prompt to try to guess article to link to from text snippet
 - Set up evaluation
@@ -73,6 +73,10 @@ Python project evaluating LLMs for document hyperlinks
 ## Kaggle Authentication
 
 Requires Kaggle [key](https://www.kaggle.com/docs/api#authentication) to be exported to environment to access data.
+
+## OpenAI Authentication
+
+Requires an [OpenAI API key](https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety) to be exported to environment
 
 ## Setup
 

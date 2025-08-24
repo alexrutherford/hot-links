@@ -1,5 +1,6 @@
 import re
 import sys
+from types import NoneType
 import dateutil
 import requests
 from bs4 import BeautifulSoup
@@ -26,16 +27,16 @@ def is_article(url: str) -> bool:
         return True
     return False
 
-def save_links(blob):
+def save_links(blob : json) -> NoneType:
     with open('../data/external/{:s}.json'.format(blob['id']), 'a') as f:
         json.dump(blob, f)
 
 
-def get_links(blob,metadata = False, v = False):
+def get_links(blob: json,metadata: bool = False, v: bool = False):
     url = blob['webUrl']
     id = str(blob['id'])
     
-    if v:print(url)
+    logging.debug:print(url)
     
 
     logging.debug('URL: {:s}'.format(url))
