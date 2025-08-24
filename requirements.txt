@@ -28,7 +28,7 @@ ghp-import==2.1.0
 gitdb==4.0.12
 GitPython==3.1.41
 h11==0.16.0
--e git+https://github.com/alexrutherford/hot-links@423ea7948871f6b2e612efb1a2aa7b1b89fdf3b4#egg=hot_links
+-e git+https://github.com/alexrutherford/hot-links@51e20da3afc48e5f6735385e391488b6a523fc54#egg=hot_links
 httpcore==1.0.9
 httpx==0.28.1
 idna==3.10
@@ -76,13 +76,16 @@ notebook_shim==0.2.4
 numpy==2.3.2
 openai==1.101.0
 overrides==7.7.0
-packaging==25.0
+packaging==24.2
 pandas==2.3.1
 pandocfilters==1.5.1
 parso==0.8.4
 pathspec==0.12.1
 pexpect==4.9.0
 pillow==11.3.0
+pinecone==7.3.0
+pinecone-plugin-assistant==1.7.0
+pinecone-plugin-interface==0.0.7
 platformdirs==4.3.8
 pluggy==1.6.0
 prometheus_client==0.22.1
