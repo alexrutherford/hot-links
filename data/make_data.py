@@ -8,6 +8,7 @@ import json
 import logging
 import pandas as pd
 import dateutil
+import time
 
 logging.basicConfig(filename='out.log', filemode='a', level=logging.DEBUG)
 
@@ -31,14 +32,34 @@ def save_links(blob : json) -> NoneType:
     with open('../data/external/{:s}.json'.format(blob['id']), 'a') as f:
         json.dump(blob, f)
 
+def extract_links(url: str) -> list:
+    # TODO fold this into get_links
+    import time
+    time.sleep(0.5)
+    
+    r = requests.get(url)
+    soup = BeautifulSoup(r.content, 'html.parser')
+    links = []
+    
+    try:
+        content = soup.find('div', {'data-gu-name': "body"}).get_text(strip=True)
+    except:
+        logging.debug('No body content found')
+
+    main = soup.find('main')
+    if main:
+        soup = main
+    for a in soup.find_all('a', href=True):
+        links.append({'href': a['href'], 'link': a.get_text(strip=True)})
+    return links
 
 def get_links(blob: json,metadata: bool = False, v: bool = False):
+    
     url = blob['webUrl']
     id = str(blob['id'])
     
     logging.debug:print(url)
     
-
     logging.debug('URL: {:s}'.format(url))
     logging.debug('ID: {:s}'.format( id))
 
