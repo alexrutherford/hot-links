@@ -36,6 +36,7 @@ def extract_links(url: str) -> list:
     # TODO fold this into get_links
     import time
     time.sleep(0.5)
+    # In case we get 429s for too many requests
     
     r = requests.get(url)
     soup = BeautifulSoup(r.content, 'html.parser')
