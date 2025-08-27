@@ -1,3 +1,4 @@
+from typing import Tuple, Any, NoneType
 import openai
 import io
 import pandas as pd
@@ -7,6 +8,8 @@ import logging
 from openai import OpenAI
 from dotenv import load_dotenv
 from collections.abc import Iterator
+from openai.types import FileObject, ResponseFormatJSONObject
+from openai.types.vector_store_search_response import VectorStoreSearchResponse
 
 logging.basicConfig(filename='out.log', filemode='a', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -26,7 +29,7 @@ def get_files_in_db(vector_store_id: str) -> Iterator[int]:
         yield f
 
 ####
-def create_vs(name: str):
+def create_vs(name: str) -> str:
     '''Create a vector DB'''
     vector_store = client.vector_stores.create(
         name=name
@@ -35,19 +38,19 @@ def create_vs(name: str):
 # Create the vector store
 
 ####
-def make_file_object(name,content):
+def make_file_object(name: str, content: str) -> Tuple[str, io.BytesIO, str]:
     '''Creates an OpenAI file object and returns it'''
     return (name+'.txt', io.BytesIO(str(content).encode('utf-8')), 'text/markdown')
 # Important to encode as bytes and add '.txt' to filename to trick API that this is a file
 
 ####
-def push_file_to_cloud(name, content):
+def push_file_to_cloud(name: str, content: str) -> str:
     '''Creates a file object and puts in cloud storage'''
     result = client.files.create(file = make_file_object(name, content), purpose = 'assistants') 
     return result.id
 
 ####
-def add_file_to_db(file_id, vs_id, attributes = {}):
+def add_file_to_db(file_id: str, vs_id: str, attributes: dict = {}) -> Any:
     '''Puts a file object, previously uploaded, into a vector DB'''
     result = client.vector_stores.files.create(
         vector_store_id=vs_id,
@@ -87,10 +90,11 @@ def delete_all_files():
         if not res.deleted:
             tqdm.tqdm.write(f"Failed to delete file {f.id}")
             
-def convert_date_to_epoch(date):
+def convert_date_to_epoch(date: str):
     return pd.to_datetime(date).value//10**9
 
-def query_db(vector_store_id, query_string, time_stamp):
+def query_db(vector_store_id: str, query_string: str, time_stamp: int) -> NoneType:
+    '''Responds to a query performing RAG to augment context from vectore DB files'''
     response = client.responses.create(
         model="gpt-4.1",
         input=query_string,
@@ -106,7 +110,8 @@ def query_db(vector_store_id, query_string, time_stamp):
     )
     return response
 
-def search_db(vector_store_id, query):
+def search_db(vector_store_id: str, query: str) ->Iterator[VectorStoreSearchResponse]:
+    '''Does plain vector search returning relevant documents and scores'''
     results = client.vector_stores.search(
         vector_store_id=vector_store_id,
         query=query,

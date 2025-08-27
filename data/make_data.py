@@ -72,9 +72,9 @@ def get_links(blob: json,metadata: bool = False, v: bool = False):
     """Extracts links from the given JSON blob."""
     url = blob['webUrl']
     id = str(blob['id'])
-    
-    logging.debug:print(url)
-    
+
+    logging.debug(url)
+
     logging.debug('URL: {:s}'.format(url))
     logging.debug('ID: {:s}'.format( id))
 
