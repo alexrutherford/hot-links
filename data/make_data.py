@@ -14,6 +14,7 @@ logging.basicConfig(filename='out.log', filemode='a', level=logging.DEBUG)
 
 logger = logging.getLogger(__name__)
 
+#####
 def is_article(url: str) -> bool:
     """
     Checks if the given URL is an article from The Guardian and not the home page etc
@@ -28,11 +29,23 @@ def is_article(url: str) -> bool:
         return True
     return False
 
+#####
 def save_links(blob : json) -> NoneType:
+    """Saves JSON blob to file"""
     with open('../data/external/{:s}.json'.format(blob['id']), 'a') as f:
         json.dump(blob, f)
 
+#####
 def extract_links(url: str) -> list:
+    """
+    Extracts links from the given URL.
+
+    Args:
+        url (str): The URL to extract links from.
+
+    Returns:
+        list: A list of dictionaries containing 'href' and 'link' for each extracted link.
+    """
     # TODO fold this into get_links
     import time
     time.sleep(0.5)
@@ -54,8 +67,9 @@ def extract_links(url: str) -> list:
         links.append({'href': a['href'], 'link': a.get_text(strip=True)})
     return links
 
+#####
 def get_links(blob: json,metadata: bool = False, v: bool = False):
-    
+    """Extracts links from the given JSON blob."""
     url = blob['webUrl']
     id = str(blob['id'])
     
