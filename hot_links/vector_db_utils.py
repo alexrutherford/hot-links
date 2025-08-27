@@ -47,3 +47,45 @@ def delete_all_files():
         
         if not res.deleted:
             tqdm.tqdm.write(f"Failed to delete file {f.id}")
+            
+def delete_all_files():
+
+    confirmation = input("Type 'DELETE' to confirm deletion of all files: ")
+
+    if confirmation != "DELETE":
+        print("Deletion cancelled.")
+        return
+
+    for f in tqdm.tqdm(client.files.list()):
+        #print(f.id)
+
+        res = client.files.delete(f.id)
+        
+        if not res.deleted:
+            tqdm.tqdm.write(f"Failed to delete file {f.id}")
+            
+def convert_date_to_epoch(date):
+    return pd.to_datetime(date).value//10**9
+
+def query_db(vector_store_id, query_string, time_stamp):
+    response = client.responses.create(
+        model="gpt-4.1",
+        input=query_string,
+        tools=[{
+            "type": "file_search",
+            "vector_store_ids": [vector_store_id],
+            "filters": {
+                "type": "lt",
+                "key": "time",
+                "value": time_stamp
+            }
+        }]
+    )
+    return response
+
+def search_db(vector_store_id, query):
+    results = client.vector_stores.search(
+        vector_store_id=vector_store_id,
+        query=query,
+    )
+    return results
