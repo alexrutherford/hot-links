@@ -4,7 +4,21 @@
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
 
-Python project evaluating LLMs for document hyperlinks
+This is a Python project evaluating LLMs ability to automatically generate document hyperlinks using Guardian news articles as an exemplar.  
+
+Links within documents such as news articles are important for the reader, they provide more relevant information, and the publisher, they encourage more engagement. However, links should be inserted carefully; too many will overwhelm and the links should be relevant to be valuable. Wikipedia even has a [style guide](https://en.wikipedia.org/wiki/Wikipedia:Manual_of_Style/Linking) for contributors to follow. You could even imagine that these links could be customised for each reader, forming a kind of content recommendation system.
+
+![News article excerpt showing hyperlink](assets/hyperlink_example.png "An example hyperlink" )
+
+However it is time consuming to embed these as part of the editorial process. It seems natural that an LLM could help to automate this. Formally the problem is stated as
+
+For a given document $D$ there are a set of tuples of the form $(\textrm{text}, \textrm{link})$. There are several distinct tasks given a document $D$ in loosely increasing order of complexity
+
+1. Given a link to another document $\mathrm{link}$ find the optimal $\mathrm{text}$ in $D$ to place the hyperlink. 
+2. Given a $\mathrm{text}$ in $D$ find the optimal link to another document $\mathrm{link}$. 
+3. Find the full set of substrings and corresponding links $\{(\mathrm{text},\mathrm{link})\}$
+
+
 
 ## Things to do
 
