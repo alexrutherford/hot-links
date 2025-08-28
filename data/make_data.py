@@ -68,7 +68,7 @@ def extract_links(url: str) -> list:
     return links
 
 #####
-def get_links(blob: json,metadata: bool = False, v: bool = False):
+def get_links(blob: json,metadata: bool = False, v: bool = False) -> dict:
     """Extracts links from the given JSON blob."""
     url = blob['webUrl']
     id = str(blob['id'])

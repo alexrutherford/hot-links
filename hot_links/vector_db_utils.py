@@ -1,4 +1,10 @@
-from typing import Tuple, Any, NoneType
+'''
+Utils for using OpenAI vector store for semantic search and RAG. Follows OpenAI documentation at
+https://platform.openai.com/docs/api-reference/responses/create
+
+'''
+
+from typing import Tuple, Any
 import openai
 import io
 import pandas as pd
@@ -16,12 +22,23 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 
+default_model ='gpt-4o-mini-2024-07-18'
+
 try:
     client = OpenAI()
     logger.info("Successfully created OpenAI client.")
 except:
     logger.error("Failed to create OpenAI client.")
 ################################################################
+def get_vector_store_id(vs_name = 'hot_links'):
+    vector_store_id = None
+
+    for vs in get_all_vs():
+        print(vs.id,vs.name)
+        
+        if vs.name == vs_name:
+            vector_store_id = vs.id
+    return vector_store_id
 
 def get_files_in_db(vector_store_id: str) -> Iterator[int]:
     '''Return an iterator of all files in a vector DB'''
@@ -93,10 +110,10 @@ def delete_all_files():
 def convert_date_to_epoch(date: str):
     return pd.to_datetime(date).value//10**9
 
-def query_db(vector_store_id: str, query_string: str, time_stamp: int) -> NoneType:
+def query_db(vector_store_id: str, query_string: str, time_stamp: int,model : str = default_model) -> ResponseFormatJSONObject:
     '''Responds to a query performing RAG to augment context from vectore DB files'''
     response = client.responses.create(
-        model="gpt-4.1",
+        model=model,
         input=query_string,
         tools=[{
             "type": "file_search",

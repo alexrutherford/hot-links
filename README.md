@@ -28,8 +28,11 @@ For a given document $D$ there are a set of tuples of the form $(\textrm{text}, 
 - ~~Check to see if there are Guardian articles that are not in the dataset~~
 - ~~Do a snowball sample until some reasonable place to stop~~
 - Set up vector DB with date as meta-data
-- Set up LLM prompt to try to guess article to link to from text snippet
+- Look for alternative vecotr stores (OpenAI has 12k doc limit)
+- ~~Set up LLM prompt to try to guess article to link to from text snippet~~
 - Set up evaluation
+- Experiment with models, prompts, sampling
+- Compare to supervised fine-tuning
 
 ## Project Organization
 
