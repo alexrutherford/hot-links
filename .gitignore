@@ -1,5 +1,14 @@
 # Data
 /data/raw/*
+/data/interim/*
+/data/external/*
+/data/processed/*
+/notebooks/*db
+
+# Logs
+/logs/*
+*.log
+notebooks/*.log
 
 # Mac OS-specific storage files
 .DS_Store
