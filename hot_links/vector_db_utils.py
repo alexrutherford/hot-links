@@ -9,6 +9,7 @@ import openai
 import io
 import pandas as pd
 import tqdm
+import datetime
 import logging
 
 from openai import OpenAI
@@ -110,27 +111,48 @@ def delete_all_files():
 def convert_date_to_epoch(date: str):
     return pd.to_datetime(date).value//10**9
 
-def query_db(vector_store_id: str, query_string: str, time_stamp: int,model : str = default_model) -> ResponseFormatJSONObject:
+def query_db(vector_store_id: str, query_string: str, time_stamp : int = None,model : str = default_model) -> ResponseFormatJSONObject:
     '''Responds to a query performing RAG to augment context from vectore DB files'''
+    if time_stamp:
+        filters = {
+                "type": "lt",
+                "key": "time",
+                "value": time_stamp
+            }
+    else:
+        filters = {}
+
     response = client.responses.create(
         model=model,
         input=query_string,
         tools=[{
             "type": "file_search",
             "vector_store_ids": [vector_store_id],
-            "filters": {
-                "type": "lt",
-                "key": "time",
-                "value": time_stamp
-            }
+            "filters": filters
         }]
     )
     return response
 
-def search_db(vector_store_id: str, query: str) ->Iterator[VectorStoreSearchResponse]:
+def search_db(vector_store_id: str, query: str, time_stamp: int = None) ->Iterator[VectorStoreSearchResponse]:
     '''Does plain vector search returning relevant documents and scores'''
+    
+    if time_stamp:
+        filters = {
+                "type": "lt",
+                "key": "time",
+                "value": str(time_stamp)
+            }
+    else:
+        filters = {
+                "type": "lt",
+                "key": "time",
+                "value": datetime.datetime.now().timestamp()
+            }
+        
     results = client.vector_stores.search(
         vector_store_id=vector_store_id,
         query=query,
+        max_num_results = 30,
+        filters=filters
     )
     return results
