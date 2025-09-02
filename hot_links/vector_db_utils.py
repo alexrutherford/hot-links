@@ -35,7 +35,7 @@ def get_vector_store_id(vs_name = 'hot_links'):
     vector_store_id = None
 
     for vs in get_all_vs():
-        print(vs.id,vs.name)
+        # print(vs.id,vs.name)
         
         if vs.name == vs_name:
             vector_store_id = vs.id
