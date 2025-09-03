@@ -62,7 +62,7 @@ def is_article(url: str) -> bool:
     r"[a-z0-9-]+(?:/[a-z0-9-]+)*/?$" # slug (one or more segments)
 )
 
-    # Got this 
+    # Got this with help from chatGPT
     if pattern.match(url):
         return True
     return False
@@ -74,7 +74,7 @@ def save_links(blob : json) -> NoneType:
         json.dump(blob, f)
 
 def extract_links_main(url: str, get_content = False) -> list:
-    """Extracts links from the main content of the given URL."""
+    """Extracts links from the main content of the given URL and optionally also main body text"""
     time.sleep(0.5)
     r = requests.get(url)
     soup = BeautifulSoup(r.content, 'html.parser')
