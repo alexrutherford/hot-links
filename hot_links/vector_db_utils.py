@@ -90,7 +90,19 @@ def get_all_files():
     for f in client.files.list():
         yield f
         
+def delete_vs(vs):
+    '''Deletes vector store in the cloud, asks for confirmation'''
 
+    confirmation = input("Type 'DELETE' to confirm deletion of vs: ")
+
+    if confirmation != "DELETE":
+        print("Deletion cancelled.")
+        return
+    
+    deleted_vector_store = client.vector_stores.delete(
+    vector_store_id=vs)
+
+    print(deleted_vector_store)
             
 def delete_all_files():
     '''Deletes all files in the cloud, asks for confirmation'''
