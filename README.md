@@ -6,9 +6,13 @@
 
 This is a Python project evaluating LLMs ability to automatically generate document hyperlinks using Guardian news articles as an exemplar.  
 
+## Problem Statement
+
 Links within documents such as news articles are important for the reader, they provide more relevant information, and the publisher, they encourage more engagement. However, links should be inserted carefully; too many will overwhelm and the links should be relevant to be valuable. Wikipedia even has a [style guide](https://en.wikipedia.org/wiki/Wikipedia:Manual_of_Style/Linking) for contributors to follow. You could even imagine that these links could be customised for each reader, forming a kind of content recommendation system.
 
 ![News article excerpt showing hyperlink](assets/hyperlink_example.png "An example hyperlink" )
+
+## Formulation
 
 However it is time consuming to embed these as part of the editorial process. It seems natural that an LLM could help to automate this. Formally the problem is stated as
 
@@ -18,7 +22,17 @@ For a given document $D$ there are a set of tuples of the form $(\textrm{text}, 
 2. Given a $\mathrm{text}$ in $D$ find the optimal link to another document $\mathrm{link}$. 
 3. Find the full set of substrings and corresponding links $\{(\mathrm{text},\mathrm{link})\}$
 
+This can be done through a combination of semantic search in a vector DB and LLM inference using file retrieval as a tool. This can be evaluated by masking either the substring or the link or both in a known article and determining if the substrong or link can be inferred. 
 
+There are some cavets such as only searching for articles that were published the same day or before the focal article. Also external links are ignored for now.
+
+## High level steps
+
+Ideally, one would have access to a comprehensive database of articles to select appropriate links from. However I do not have that. So a corpus of articles must be developed. This need not be comprehensive i.e. all Guardian articles ever, but should (i) include the true article and (ii) should be of reasonable size to demonstrate the efficacy of the retrieval method.
+
+Firstly a set of seed articles is defined, using a dataset from Kaggle (the Official Guardian API doesn't seem stable enough to retrieve). The seed articles are placed in a vector store and links are substrings are extracted and stored in a flat file. The out-links from all seed articles are de-duplicated and the HTML content derived via (responsible) scraping. The body text and second generation out-links are extracted from this HTML. The body text is placed in the vector store and the links are also stored in a flat file. This process could contiue indefinitely, navigating the document link network. However it is expensive and not necessary for demonstrating the concept.
+
+Secondly....
 
 ## Things to do
 
@@ -27,8 +41,9 @@ For a given document $D$ there are a set of tuples of the form $(\textrm{text}, 
 - Check to see how many links are external (FYI)
 - ~~Check to see if there are Guardian articles that are not in the dataset~~
 - ~~Do a snowball sample until some reasonable place to stop~~
-- Set up vector DB with date as meta-data
-- Look for alternative vecotr stores (OpenAI has 12k doc limit)
+- ~~Set up vector DB with date as meta-data~~
+- Look for alternative vecotr stores (OpenAI has 12k doc limit and 4096 char query limit)
+- Investigate chunking strategies for db
 - ~~Set up LLM prompt to try to guess article to link to from text snippet~~
 - Set up evaluation
 - Experiment with models, prompts, sampling

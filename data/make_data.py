@@ -15,25 +15,22 @@ logging.basicConfig(filename='out.log', filemode='a', level=logging.DEBUG)
 
 logger = logging.getLogger(__name__)
 
-def get_date_from_url(url):
+def get_date_from_url(url: str):
+    '''Parses Guardian URLs to extract year, month and date'''
     pattern = re.compile(
     r"^https://www\.theguardian\.com/(?:[a-z-]+/)+"
-    r"(20(0[0-9]|1[0-9]|2[0-4]))/"              # group 1 = full year
+    r"(20(0[0-9]|1[0-9]|2[0-4]))/"              # group 1 = full year 200 - 2024
     r"(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/"  # group 3 = month
     r"(0[1-9]|[12][0-9]|3[01])/"         # group 4 = day
     r"(?:[a-z0-9-]+)(?:/[a-z0-9-]+)*/?(?:[?#].*)?$")
     
-    # print(url)
-    
     match = pattern.match(url.strip())
-    #print(match.groups())
+    
     
     if match:
         year = match.group(1)        # "2015"
         month = match.group(3)   # "oct"
         day = match.group(4)         # "21"
-        
-        #print(year, month, day)
     
         # Parse with strptime
         dt = datetime.datetime.strptime(f"{match.group(1)} {match.group(3)} {match.group(4)}", "%Y %b %d")
@@ -84,6 +81,8 @@ def extract_links_main(url: str, get_content = False) -> list:
         r.raise_for_status()
     except requests.exceptions.RequestException as e:
         print('Failed',e)
+        logger.warning('Failed {e}')
+        logger.warning('URL: {url}')
 
     main = soup.find('div', id='maincontent')
     if main:

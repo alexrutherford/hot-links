@@ -15,7 +15,7 @@ import logging
 from openai import OpenAI
 from dotenv import load_dotenv
 from collections.abc import Iterator
-from openai.types import FileObject, ResponseFormatJSONObject
+from openai.types import FileObject, ResponseFormatJSONObject, VectorStore
 from openai.types.vector_store_search_response import VectorStoreSearchResponse
 
 logging.basicConfig(filename='out.log', filemode='a', level=logging.DEBUG)
@@ -31,7 +31,7 @@ try:
 except:
     logger.error("Failed to create OpenAI client.")
 ################################################################
-def get_vector_store_id(vs_name = 'hot_links'):
+def get_vector_store_id(vs_name:str = 'hot_links') -> VectorStore:
     vector_store_id = None
 
     for vs in get_all_vs():
@@ -70,6 +70,7 @@ def push_file_to_cloud(name: str, content: str) -> str:
 ####
 def add_file_to_db(file_id: str, vs_id: str, attributes: dict = {}) -> Any:
     '''Puts a file object, previously uploaded, into a vector DB'''
+    # TODO add filename of source as additional attribute to filter out
     result = client.vector_stores.files.create(
         vector_store_id=vs_id,
         file_id=file_id,
@@ -125,6 +126,7 @@ def convert_date_to_epoch(date: str):
 
 def query_db(vector_store_id: str, query_string: str, time_stamp : int = None,model : str = default_model) -> ResponseFormatJSONObject:
     '''Responds to a query performing RAG to augment context from vectore DB files'''
+    # TODO add filename of source as additional attribute to filter out
     if time_stamp:
         filters = {
                 "type": "lt",
@@ -145,26 +147,42 @@ def query_db(vector_store_id: str, query_string: str, time_stamp : int = None,mo
     )
     return response
 
-def search_db(vector_store_id: str, query: str, time_stamp: int = None) ->Iterator[VectorStoreSearchResponse]:
+def search_db(vector_store_id: str, query: str, time_stamp: int = None, name = None) ->Iterator[VectorStoreSearchResponse]:
     '''Does plain vector search returning relevant documents and scores'''
-    
     if time_stamp:
         filters = {
                 "type": "lt",
-                "key": "time",
-                "value": str(time_stamp)
+                "key": "date",
+                "value": int(time_stamp)
             }
     else:
-        filters = {
+        filters = None
+        
+    if name and time_stamp:
+        filters = {'type' : 'and', 'filters' : [{
                 "type": "lt",
-                "key": "time",
-                "value": datetime.datetime.now().timestamp()
+                "key": "date",
+                "value": int(time_stamp)},
+                    {
+                "type": "ne",
+                "key": "filename",
+                "value": name}]
             }
         
-    results = client.vector_stores.search(
+    print('filters',filters)
+        
+    if filters:
+        results = client.vector_stores.search(
         vector_store_id=vector_store_id,
         query=query,
         max_num_results = 30,
         filters=filters
+    )
+    else:
+        
+        results = client.vector_stores.search(
+        vector_store_id=vector_store_id,
+        query=query,
+        max_num_results = 30
     )
     return results
