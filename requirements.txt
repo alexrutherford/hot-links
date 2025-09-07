@@ -28,7 +28,7 @@ ghp-import==2.1.0
 gitdb==4.0.12
 GitPython==3.1.41
 h11==0.16.0
--e git+https://github.com/alexrutherford/hot-links@51e20da3afc48e5f6735385e391488b6a523fc54#egg=hot_links
+-e git+https://github.com/alexrutherford/hot-links@315ab27262ad1f454344cb599440d8dc11898695#egg=hot_links
 httpcore==1.0.9
 httpx==0.28.1
 idna==3.10
@@ -116,6 +116,7 @@ rpds-py==0.27.0
 ruff==0.12.9
 scikit-learn==1.7.1
 scipy==1.16.1
+seaborn==0.13.2
 Send2Trash==1.8.3
 setuptools==75.6.0
 shellingham==1.5.4
