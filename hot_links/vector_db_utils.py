@@ -147,10 +147,22 @@ def query_db(vector_store_id: str, query_string: str, time_stamp : int = None,mo
     )
     return response
 
-def search_db(vector_store_id: str, query: str, time_stamp: int = None, name = None) ->Iterator[VectorStoreSearchResponse]:
+def search_db(vector_store_id: str, query: str, time_stamp: int = None, name = None, max_num_results: int = 30, window_days: int = None) ->Iterator[VectorStoreSearchResponse]:
     '''Does plain vector search returning relevant documents and scores'''
     if time_stamp:
-        filters = {
+        if window_days:
+            start_time = time_stamp - window_days*24*3600
+            filters = {'type' : 'and', 'filters' : [{
+                "type": "lt",
+                "key": "date",
+                "value": int(time_stamp)},
+                    {
+                "type": "gt",
+                "key": "date",
+                "value": int(start_time)}]
+            }
+        else:
+            filters = {
                 "type": "lt",
                 "key": "date",
                 "value": int(time_stamp)
@@ -169,13 +181,13 @@ def search_db(vector_store_id: str, query: str, time_stamp: int = None, name = N
                 "value": name}]
             }
         
-    print('filters',filters)
+    # print('filters',filters)
         
     if filters:
         results = client.vector_stores.search(
         vector_store_id=vector_store_id,
         query=query,
-        max_num_results = 30,
+        max_num_results = max_num_results,
         filters=filters
     )
     else:
@@ -183,6 +195,6 @@ def search_db(vector_store_id: str, query: str, time_stamp: int = None, name = N
         results = client.vector_stores.search(
         vector_store_id=vector_store_id,
         query=query,
-        max_num_results = 30
+        max_num_results = max_num_results
     )
     return results
