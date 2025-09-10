@@ -133,17 +133,22 @@ def query_db(vector_store_id: str, query_string: str, time_stamp : int = None,mo
                 "key": "time",
                 "value": time_stamp
             }
-    else:
-        filters = {}
-
-    response = client.responses.create(
-        model=model,
-        input=query_string,
-        tools=[{
+        [{
             "type": "file_search",
             "vector_store_ids": [vector_store_id],
             "filters": filters
         }]
+    else:
+    
+        tools = [{
+            "type": "file_search",
+            "vector_store_ids": [vector_store_id]
+        }]
+
+    response = client.responses.create(
+        model=model,
+        input=query_string,
+        tools= tools
     )
     return response
 

@@ -22,9 +22,9 @@ For a given document $D$ there are a set of tuples of the form $(\textrm{text}, 
 2. Given a $\mathrm{text}$ in $D$ find the optimal link to another document $\mathrm{link}$. 
 3. Find the full set of substrings and corresponding links $\{(\mathrm{text},\mathrm{link})\}$
 
-This can be done through a combination of semantic search in a vector DB and LLM inference using file retrieval as a tool. This can be evaluated by masking either the substring or the link or both in a known article and determining if the substrong or link can be inferred. 
+This can be done through a combination of semantic search in a vector DB and LLM inference using file retrieval as a tool. This can be evaluated by masking either the substring or the link or both in a known article and determining if the substring or link can be inferred. 
 
-There are some cavets such as only searching for articles that were published the same day or before the focal article. Also external links are ignored for now.
+There are some cavets such as only searching for articles that were published the same day or before the focal article. Also external links are ignored for now. It is also necessary to do a snowball sample in the absence of a full database of articles to retreive from.
 
 ## High level steps
 
@@ -36,7 +36,7 @@ Secondly....
 
 ## Initial Results
 
-Based on 50 random seed articles being tested, see [04_evals.ipynb](notebooks/04_evals.ipynb). Comparing different strategies.
+This is for retrieving links given a document and text snippets (formulation 2 above). Based on 50 random seed articles being tested, see [04_evals.ipynb](notebooks/04_evals.ipynb). Comparing different strategies.
 
 ### Naive Vector Search using entire seed document as search query
 
