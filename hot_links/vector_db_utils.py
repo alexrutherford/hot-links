@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 
-default_model ='gpt-4o-mini-2024-07-18'
+default_model ='gpt-4.1-nano'
 
 try:
     client = OpenAI()
