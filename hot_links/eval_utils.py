@@ -1,12 +1,30 @@
 from vector_db_utils import search_db
+import logging
+from typing import List, Tuple
+from pandas import Series
 
-def get_matches_snippet(vector_store_id,test_article, v = False,time_stamp: int = None,window_days: int = None):
+logging.basicConfig(filename='out.log', filemode='a', level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
+########################################
+def get_matches_snippet(vector_store_id:str, test_article:Series, v = False,time_stamp: int = None,window_days: int = None) -> Tuple[List[int],List[float]]:
+    '''
+    Get matched snippet positions and scores for a test article.
+    Args:
+        vector_store_id (str): The ID of the vector store to search.
+        test_article (Series): The test article containing 'links' and 'bodyContent'.
+        v (bool): Verbosity flag.
+        time_stamp (int, optional): Timestamp for filtering results.
+        window_days (int, optional): Time window in days for filtering results.
+    '''
     test_article_links = [d['href']+'.txt' for d in test_article['links']]
     test_article_snippets = [d['link'] for d in test_article['links']]
     
     matched_chunk_positions = []
     matched_chunk_scores = []
+
+    logger.debug('Evaluating article: {:s}'.format(test_article['webUrl']))
+    logger.debug('Number of links to find: {:d}'.format(len(test_article_links)))
 
     for n_test in range(len(test_article_links)):
         if v:print(n_test,test_article_snippets[n_test])
@@ -30,7 +48,6 @@ def get_matches_snippet(vector_store_id,test_article, v = False,time_stamp: int 
         # TODO replace
         results = search_db(vector_store_id, query[:4096], max_num_results=20, time_stamp=time_stamp, window_days=window_days)
 
-        
         results =[r for r in results if not r.filename == test_article.webUrl+'.txt']
         # Drop original article from results
 
@@ -51,20 +68,24 @@ def get_matches_snippet(vector_store_id,test_article, v = False,time_stamp: int 
                 # A different chunk of same file maight be matched, no need to store
     return matched_chunk_positions, matched_chunk_scores
                 
+                
+
         
+########################################
+def get_matched_links(vector_store_id:str, query:str, test_article:Series, v:bool = False, time_stamp: int = None, window_days: int = None) -> Tuple[List[str],List[int],List[float], int]:
 
-def get_matched_links(vector_store_id, query, test_article, v = False, time_stamp: int = None, window_days: int = None):
-
-    '''
-    results = client.vector_stores.search(
-    vector_store_id=vector_store_id,
-    query=query[:4096],
-    max_num_results = 20
-    )
-    '''
+    """Get matched links from the vector store based on the test article.
+    Args:
+        vector_store_id (str): The ID of the vector store to search.
+        query (str): The query string to search for.
+        test_article (Series): The test article containing 'links' and 'bodyContent'.
+        v (bool): Verbosity flag.
+        time_stamp (int, optional): Timestamp for filtering results.
+        window_days (int, optional): Time window in days for filtering results.
+    """
     name = test_article['webUrl']+'txt'
     name = None
-    results = search_db(vector_store_id, query, max_num_results=20, time_stamp=time_stamp, name=name, window_days=window_days)
+    results = search_db(vector_store_id, query, max_num_results=20, time_stamp=time_stamp, name=name, window_days=window_days) 
 
     test_article_links = [d['href']+'.txt' for d in test_article['links']]
     test_article_snippets = [d['link'] for d in test_article['links']]

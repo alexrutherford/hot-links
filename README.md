@@ -34,6 +34,51 @@ Firstly a set of seed articles is defined, using a dataset from Kaggle (the Offi
 
 Secondly....
 
+## Initial Results
+
+Based on 50 random seed articles being tested, see [04_evals.ipynb](notebooks/04_evals.ipynb). Comparing different strategies.
+
+### Naive Vector Search using entire seed document as search query
+
+_Return ranked matches to \<document.contents\>_
+
+23 articles have no link matches (46.00%).  
+49 links found out of 99 (49.49%).  
+Median rank is 5.0.  
+
+### Naive Vector Search using entire seed document as search query + 14 time window
+
+_Return ranked matches to \<document.contents\> within 14 days before \<document.date\>_
+
+26 articles have no link matches (52.00%).  
+48 links found out of 99 (48.48%).  
+Median rank is 4.0.  
+
+### Searching for each link snippet individually
+
+_I want to add a link at this point
+\<link.snippet\> \
+in the article below. Which document would be best?
+\<document.contents\>_
+
+Out of 50 articles and 118 total links (2.36 av.).  
+45 links not found (38.14%).  
+Median rank is 2.0 (mean rank is 3.07).  
+Mean score for zero ranked matches is 0.60.  
+
+### Searching for each link snippet individually + 14 time window
+
+_I want to add a link at this point
+\<link.snippet\> \
+in the article below. Which document would be best out of those within 14 days before \<document.date\>?
+\<document.contents\>_
+
+Out of 50 articles and 89 total links (1.78 av.).   
+43 links not found (48.31%).  
+Median rank is 1.0 (mean rank is 2.07).  
+21 matches were at rank 0 (23.6% of all links).  
+Mean score for zero ranked matches is 0.60.  
+
 ## Things to do
 
 - ~~Scrape a few recent articles to build up a validation set~~
@@ -45,7 +90,8 @@ Secondly....
 - Look for alternative vecotr stores (OpenAI has 12k doc limit and 4096 char query limit)
 - Investigate chunking strategies for db
 - ~~Set up LLM prompt to try to guess article to link to from text snippet~~
-- Set up evaluation
+- ~~Set up evaluation~~
+- How to set up batches (seems [not available](https://platform.openai.com/docs/api-reference/batch/create) to `vector_store.search` endpoint)
 - Experiment with models, prompts, sampling
 - Compare to supervised fine-tuning
 
@@ -119,3 +165,6 @@ Requires an [OpenAI API key](https://help.openai.com/en/articles/5112595-best-pr
 5. Creat empty Codepsace from repo
 6. Create venv in VS Code from requirements.txt
 
+
+
+[def]: 04_evals
