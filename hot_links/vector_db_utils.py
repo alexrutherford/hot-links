@@ -11,6 +11,7 @@ import pandas as pd
 import tqdm
 import datetime
 import logging
+import sys
 
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -30,6 +31,41 @@ try:
     logger.info("Successfully created OpenAI client.")
 except:
     logger.error("Failed to create OpenAI client.")
+    
+################################################################
+
+def check_uploaded_file(vector_store_id, url_to_test: str) -> None:
+     
+    found_file_id = None
+    
+    print('Testing:',url_to_test)
+    logger.info('Testing: {url_to_test}')
+
+    for f in client.files.list():
+        #print(f)
+        if f.filename == '{:s}.txt'.format(url_to_test):
+            print('File found in cloud',)
+            print(f)
+            logger.info('File found in cloud {url_to_test}')
+            logger.info(f)
+            found_file_id = f.id
+            break
+
+    if not found_file_id:
+        print('Error: file not in cloud')
+        logger.warning('Error: file not in cloud')
+        sys.exit(1)
+    else:
+        vector_store_file = client.vector_stores.files.retrieve(
+        vector_store_id=vector_store_id,
+        file_id=f.id
+        )
+        print('Found file in VS')
+        print(vector_store_file)
+        
+        logger.info('Found file in VS')
+        logger.info(vector_store_file)
+    
 ################################################################
 def get_vector_store_id(vs_name:str = 'hot_links') -> VectorStore:
     vector_store_id = None
