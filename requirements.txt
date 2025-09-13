@@ -24,11 +24,12 @@ executing==2.2.0
 fastjsonschema==2.21.2
 fonttools==4.59.1
 fqdn==1.5.1
+fuzzywuzzy==0.18.0
 ghp-import==2.1.0
 gitdb==4.0.12
 GitPython==3.1.41
 h11==0.16.0
--e git+https://github.com/alexrutherford/hot-links@8f72d0e50432cd43b6c81c9de78487893aa3da89#egg=hot_links
+-e git+https://github.com/alexrutherford/hot-links@b8e39065aa9004e9a77f1b3f34b8e6afe0b72c60#egg=hot_links
 httpcore==1.0.9
 httpx==0.28.1
 idna==3.10
@@ -56,6 +57,7 @@ jupyterlab_pygments==0.3.0
 jupyterlab_server==2.27.3
 kiwisolver==1.4.9
 lark==1.2.2
+Levenshtein==0.27.1
 loguru==0.7.3
 Markdown==3.8.2
 markdown-it-py==4.0.0
@@ -102,10 +104,12 @@ pytest==8.4.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.1.1
 python-json-logger==3.3.0
+python-Levenshtein==0.27.1
 pytz==2025.2
 PyYAML==6.0.2
 pyyaml_env_tag==1.1
 pyzmq==27.0.1
+RapidFuzz==3.14.1
 referencing==0.36.2
 requests==2.32.4
 rfc3339-validator==0.1.4
