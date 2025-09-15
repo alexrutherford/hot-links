@@ -79,6 +79,11 @@ Median rank is 1.0 (mean rank is 2.07).
 21 matches were at rank 0 (23.6% of all links).  
 Mean score for zero ranked matches is 0.60.  
 
+## Model Comparison
+
+![Mean overlap of generated text](reports/figures/overlap_by_model.png "Compare models" )
+![Mean separation of generated text from real snippet](reports/figures/separation_by_model.png "Compare models" )
+
 ## Things to do
 
 - ~~Scrape a few recent articles to build up a validation set~~
@@ -94,6 +99,7 @@ Mean score for zero ranked matches is 0.60.
 - How to set up batches (seems [not available](https://platform.openai.com/docs/api-reference/batch/create) to `vector_store.search` endpoint)
 - Experiment with models, prompts, sampling
 - Compare to supervised fine-tuning
+- Implement prompt cahcing: move static content i.e. document contents to beginnign of prompt
 
 ## Project Organization
 
