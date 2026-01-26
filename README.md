@@ -92,14 +92,14 @@ Mean score for zero ranked matches is 0.60.
 - ~~Check to see if there are Guardian articles that are not in the dataset~~
 - ~~Do a snowball sample until some reasonable place to stop~~
 - ~~Set up vector DB with date as meta-data~~
-- Look for alternative vecotr stores (OpenAI has 12k doc limit and 4096 char query limit)
+- Look for alternative vector stores (OpenAI has 12k doc limit and 4096 char query limit)
 - Investigate chunking strategies for db
 - ~~Set up LLM prompt to try to guess article to link to from text snippet~~
 - ~~Set up evaluation~~
 - How to set up batches (seems [not available](https://platform.openai.com/docs/api-reference/batch/create) to `vector_store.search` endpoint)
 - Experiment with models, prompts, sampling
 - Compare to supervised fine-tuning
-- Implement prompt cahcing: move static content i.e. document contents to beginnign of prompt
+- Implement prompt cahcing: move static content i.e. document contents to beginning of prompt
 
 ## Project Organization
 
