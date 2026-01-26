@@ -30,3 +30,9 @@ try:
     logger.add(lambda msg: tqdm.write(msg, end=""), colorize=True)
 except ModuleNotFoundError:
     pass
+
+n_sft = 200
+n_dpo = 200
+# Number of articles for SFT and DPO training sets
+
+fine_tuned_model_name = 'ft:gpt-4.1-mini-2025-04-14:personal:hot-links-sft:D2LZkPm2'
