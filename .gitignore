@@ -1,5 +1,6 @@
 # Data
 /data/raw/*
+!/data/raw/gurdian_articles_sample.csv
 /data/interim/*
 /data/external/*
 /data/processed/*

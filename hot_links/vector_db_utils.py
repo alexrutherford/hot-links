@@ -11,11 +11,12 @@ import pandas as pd
 import tqdm
 import datetime
 import logging
+import sys
 
 from openai import OpenAI
 from dotenv import load_dotenv
 from collections.abc import Iterator
-from openai.types import FileObject, ResponseFormatJSONObject
+from openai.types import FileObject, ResponseFormatJSONObject, VectorStore
 from openai.types.vector_store_search_response import VectorStoreSearchResponse
 
 logging.basicConfig(filename='out.log', filemode='a', level=logging.DEBUG)
@@ -23,19 +24,54 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 
-default_model ='gpt-4o-mini-2024-07-18'
+default_model ='gpt-4.1-nano'
 
 try:
     client = OpenAI()
     logger.info("Successfully created OpenAI client.")
 except:
     logger.error("Failed to create OpenAI client.")
+    
 ################################################################
-def get_vector_store_id(vs_name = 'hot_links'):
+
+def check_uploaded_file(vector_store_id, url_to_test: str) -> None:
+     
+    found_file_id = None
+    
+    print('Testing:',url_to_test)
+    logger.info('Testing: {url_to_test}')
+
+    for f in client.files.list():
+        #print(f)
+        if f.filename == '{:s}.txt'.format(url_to_test):
+            print('File found in cloud',)
+            print(f)
+            logger.info('File found in cloud {url_to_test}')
+            logger.info(f)
+            found_file_id = f.id
+            break
+
+    if not found_file_id:
+        print('Error: file not in cloud')
+        logger.warning('Error: file not in cloud')
+        sys.exit(1)
+    else:
+        vector_store_file = client.vector_stores.files.retrieve(
+        vector_store_id=vector_store_id,
+        file_id=f.id
+        )
+        print('Found file in VS')
+        print(vector_store_file)
+        
+        logger.info('Found file in VS')
+        logger.info(vector_store_file)
+    
+################################################################
+def get_vector_store_id(vs_name:str = 'hot_links') -> VectorStore:
     vector_store_id = None
 
     for vs in get_all_vs():
-        print(vs.id,vs.name)
+        # print(vs.id,vs.name)
         
         if vs.name == vs_name:
             vector_store_id = vs.id
@@ -70,6 +106,7 @@ def push_file_to_cloud(name: str, content: str) -> str:
 ####
 def add_file_to_db(file_id: str, vs_id: str, attributes: dict = {}) -> Any:
     '''Puts a file object, previously uploaded, into a vector DB'''
+    # TODO add filename of source as additional attribute to filter out
     result = client.vector_stores.files.create(
         vector_store_id=vs_id,
         file_id=file_id,
@@ -90,7 +127,19 @@ def get_all_files():
     for f in client.files.list():
         yield f
         
+def delete_vs(vs):
+    '''Deletes vector store in the cloud, asks for confirmation'''
 
+    confirmation = input("Type 'DELETE' to confirm deletion of vs: ")
+
+    if confirmation != "DELETE":
+        print("Deletion cancelled.")
+        return
+    
+    deleted_vector_store = client.vector_stores.delete(
+    vector_store_id=vs)
+
+    print(deleted_vector_store)
             
 def delete_all_files():
     '''Deletes all files in the cloud, asks for confirmation'''
@@ -113,46 +162,80 @@ def convert_date_to_epoch(date: str):
 
 def query_db(vector_store_id: str, query_string: str, time_stamp : int = None,model : str = default_model) -> ResponseFormatJSONObject:
     '''Responds to a query performing RAG to augment context from vectore DB files'''
+    # TODO add filename of source as additional attribute to filter out
     if time_stamp:
         filters = {
                 "type": "lt",
                 "key": "time",
                 "value": time_stamp
             }
-    else:
-        filters = {}
-
-    response = client.responses.create(
-        model=model,
-        input=query_string,
-        tools=[{
+        [{
             "type": "file_search",
             "vector_store_ids": [vector_store_id],
             "filters": filters
         }]
+    else:
+    
+        tools = [{
+            "type": "file_search",
+            "vector_store_ids": [vector_store_id]
+        }]
+
+    response = client.responses.create(
+        model=model,
+        input=query_string,
+        tools= tools
     )
     return response
 
-def search_db(vector_store_id: str, query: str, time_stamp: int = None) ->Iterator[VectorStoreSearchResponse]:
+def search_db(vector_store_id: str, query: str, time_stamp: int = None, name = None, max_num_results: int = 30, window_days: int = None) ->Iterator[VectorStoreSearchResponse]:
     '''Does plain vector search returning relevant documents and scores'''
-    
     if time_stamp:
-        filters = {
+        if window_days:
+            start_time = time_stamp - window_days*24*3600
+            filters = {'type' : 'and', 'filters' : [{
                 "type": "lt",
-                "key": "time",
-                "value": str(time_stamp)
+                "key": "date",
+                "value": int(time_stamp)},
+                    {
+                "type": "gt",
+                "key": "date",
+                "value": int(start_time)}]
+            }
+        else:
+            filters = {
+                "type": "lt",
+                "key": "date",
+                "value": int(time_stamp)
             }
     else:
-        filters = {
+        filters = None
+        
+    if name and time_stamp:
+        filters = {'type' : 'and', 'filters' : [{
                 "type": "lt",
-                "key": "time",
-                "value": datetime.datetime.now().timestamp()
+                "key": "date",
+                "value": int(time_stamp)},
+                    {
+                "type": "ne",
+                "key": "filename",
+                "value": name}]
             }
         
-    results = client.vector_stores.search(
+    # print('filters',filters)
+        
+    if filters:
+        results = client.vector_stores.search(
         vector_store_id=vector_store_id,
         query=query,
-        max_num_results = 30,
+        max_num_results = max_num_results,
         filters=filters
+    )
+    else:
+        
+        results = client.vector_stores.search(
+        vector_store_id=vector_store_id,
+        query=query,
+        max_num_results = max_num_results
     )
     return results

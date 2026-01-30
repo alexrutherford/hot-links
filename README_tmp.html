@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="hot-links">hot-links</h1>
+<a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
+    <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter">
+</a>
+<p>This is a Python project evaluating LLMs ability to automatically generate document hyperlinks using Guardian news articles as an exemplar.</p>
+<h2 id="problem-statement">Problem Statement</h2>
+<p>Links within documents such as news articles are important for the reader, they provide more relevant information, and the publisher, they encourage more engagement. However, links should be inserted carefully; too many will overwhelm and the links should be relevant to be valuable. Wikipedia even has a <a href="https://en.wikipedia.org/wiki/Wikipedia:Manual_of_Style/Linking">style guide</a> for contributors to follow. You could even imagine that these links could be customised for each reader, forming a kind of content recommendation system.</p>
+<p><img src="file:///workspaces/hot-links/assets/hyperlink_example.png" alt="News article excerpt showing hyperlink" title="An example hyperlink"></p>
+<h2 id="formulation">Formulation</h2>
+<p>However it is time consuming to embed these as part of the editorial process. It seems natural that an LLM could help to automate this. Formally the problem is stated as</p>
+<p>For a given document $D$ there are a set of tuples of the form $(\textrm{text}, \textrm{link})$. There are several distinct tasks given a document $D$ in loosely increasing order of complexity</p>
+<ol>
+<li>Given a link to another document $\mathrm{link}$ find the optimal $\mathrm{text}$ in $D$ to place the hyperlink.</li>
+<li>Given a $\mathrm{text}$ in $D$ find the optimal link to another document $\mathrm{link}$.</li>
+<li>Find the full set of substrings and corresponding links ${(\mathrm{text},\mathrm{link})}$</li>
+</ol>
+<p>This can be done through a combination of semantic search in a vector DB and LLM inference using file retrieval as a tool. This can be evaluated by masking either the substring or the link or both in a known article and determining if the substring or link can be inferred.</p>
+<p>There are some cavets such as only searching for articles that were published the same day or before the focal article. Also external links are ignored for now. It is also necessary to do a snowball sample in the absence of a full database of articles to retreive from.</p>
+<h2 id="high-level-steps">High level steps</h2>
+<p>Ideally, one would have access to a comprehensive database of articles to select appropriate links from. However I do not have that. So a corpus of articles must be developed. This need not be comprehensive i.e. all Guardian articles ever, but should (i) include the true article and (ii) should be of reasonable size to demonstrate the efficacy of the retrieval method.</p>
+<p>Firstly a set of seed articles is defined, using a dataset from Kaggle (the Official Guardian API doesn't seem stable enough to retrieve). The seed articles are placed in a vector store and links are substrings are extracted and stored in a flat file. The out-links from all seed articles are de-duplicated and the HTML content derived via (responsible) scraping. The body text and second generation out-links are extracted from this HTML. The body text is placed in the vector store and the links are also stored in a flat file. This process could contiue indefinitely, navigating the document link network. However it is expensive and not necessary for demonstrating the concept.</p>
+<p>Secondly....</p>
+<h2 id="initial-results">Initial Results</h2>
+<p>This is for retrieving links given a document and text snippets (formulation 2 above). Based on 50 random seed articles being tested, see <a href="notebooks/04_evals.ipynb">04_evals.ipynb</a>. Comparing different strategies.</p>
+<h3 id="naive-vector-search-using-entire-seed-document-as-search-query">Naive Vector Search using entire seed document as search query</h3>
+<p><em>Return ranked matches to &lt;document.contents&gt;</em></p>
+<p>23 articles have no link matches (46.00%).<br>
+49 links found out of 99 (49.49%).<br>
+Median rank is 5.0.</p>
+<h3 id="naive-vector-search-using-entire-seed-document-as-search-query--14-time-window">Naive Vector Search using entire seed document as search query + 14 time window</h3>
+<p><em>Return ranked matches to &lt;document.contents&gt; within 14 days before &lt;document.date&gt;</em></p>
+<p>26 articles have no link matches (52.00%).<br>
+48 links found out of 99 (48.48%).<br>
+Median rank is 4.0.</p>
+<h3 id="searching-for-each-link-snippet-individually">Searching for each link snippet individually</h3>
+<p><em>I want to add a link at this point
+&lt;link.snippet&gt; <br>
+in the article below. Which document would be best?
+&lt;document.contents&gt;</em></p>
+<p>Out of 50 articles and 118 total links (2.36 av.).<br>
+45 links not found (38.14%).<br>
+Median rank is 2.0 (mean rank is 3.07).<br>
+Mean score for zero ranked matches is 0.60.</p>
+<h3 id="searching-for-each-link-snippet-individually--14-time-window">Searching for each link snippet individually + 14 time window</h3>
+<p><em>I want to add a link at this point
+&lt;link.snippet&gt; <br>
+in the article below. Which document would be best out of those within 14 days before &lt;document.date&gt;?
+&lt;document.contents&gt;</em></p>
+<p>Out of 50 articles and 89 total links (1.78 av.).<br>
+43 links not found (48.31%).<br>
+Median rank is 1.0 (mean rank is 2.07).<br>
+21 matches were at rank 0 (23.6% of all links).<br>
+Mean score for zero ranked matches is 0.60.</p>
+<h2 id="model-comparison">Model Comparison</h2>
+<p><img src="file:///workspaces/hot-links/reports/figures/overlap_by_model.png" alt="Mean overlap of generated text" title="Compare models">
+<img src="file:///workspaces/hot-links/reports/figures/separation_by_model.png" alt="Mean separation of generated text from real snippet" title="Compare models"></p>
+<h2 id="things-to-do">Things to do</h2>
+<ul>
+<li><s>Scrape a few recent articles to build up a validation set</s></li>
+<li><s>Persist to interim data file</s></li>
+<li>Check to see how many links are external (FYI)</li>
+<li><s>Check to see if there are Guardian articles that are not in the dataset</s></li>
+<li><s>Do a snowball sample until some reasonable place to stop</s></li>
+<li><s>Set up vector DB with date as meta-data</s></li>
+<li>Look for alternative vecotr stores (OpenAI has 12k doc limit and 4096 char query limit)</li>
+<li>Investigate chunking strategies for db</li>
+<li><s>Set up LLM prompt to try to guess article to link to from text snippet</s></li>
+<li><s>Set up evaluation</s></li>
+<li>How to set up batches (seems <a href="https://platform.openai.com/docs/api-reference/batch/create">not available</a> to <code>vector_store.search</code> endpoint)</li>
+<li>Experiment with models, prompts, sampling</li>
+<li>Compare to supervised fine-tuning</li>
+<li>Implement prompt cahcing: move static content i.e. document contents to beginnign of prompt</li>
+</ul>
+<h2 id="project-organization">Project Organization</h2>
+<pre class="hljs"><code><div>├── LICENSE            &lt;- Open-source license if one is chosen
+├── Makefile           &lt;- Makefile with convenience commands like `make data` or `make train`
+├── README.md          &lt;- The top-level README for developers using this project.
+├── data
+│   ├── external       &lt;- Data from third party sources.
+│   ├── interim        &lt;- Intermediate data that has been transformed.
+│   ├── processed      &lt;- The final, canonical data sets for modeling.
+│   └── raw            &lt;- The original, immutable data dump.
+│
+├── docs               &lt;- A default mkdocs project; see www.mkdocs.org for details
+│
+├── models             &lt;- Trained and serialized models, model predictions, or model summaries
+│
+├── notebooks          &lt;- Jupyter notebooks. Naming convention is a number (for ordering),
+│                         the creator's initials, and a short `-` delimited description, e.g.
+│                         `1.0-jqp-initial-data-exploration`.
+│
+├── pyproject.toml     &lt;- Project configuration file with package metadata for 
+│                         hot_links and configuration for tools like black
+│
+├── references         &lt;- Data dictionaries, manuals, and all other explanatory materials.
+│
+├── reports            &lt;- Generated analysis as HTML, PDF, LaTeX, etc.
+│   └── figures        &lt;- Generated graphics and figures to be used in reporting
+│
+├── requirements.txt   &lt;- The requirements file for reproducing the analysis environment, e.g.
+│                         generated with `pip freeze &gt; requirements.txt`
+│
+├── setup.cfg          &lt;- Configuration file for flake8
+│
+└── hot_links   &lt;- Source code for use in this project.
+    │
+    ├── __init__.py             &lt;- Makes hot_links a Python module
+    │
+    ├── config.py               &lt;- Store useful variables and configuration
+    │
+    ├── dataset.py              &lt;- Scripts to download or generate data
+    │
+    ├── features.py             &lt;- Code to create features for modeling
+    │
+    ├── modeling                
+    │   ├── __init__.py 
+    │   ├── predict.py          &lt;- Code to run model inference with trained models          
+    │   └── train.py            &lt;- Code to train models
+    │
+    └── plots.py                &lt;- Code to create visualizations
+</div></code></pre>
+<hr>
+<h2 id="kaggle-authentication">Kaggle Authentication</h2>
+<p>Requires Kaggle <a href="https://www.kaggle.com/docs/api#authentication">key</a> to be exported to environment to access data.</p>
+<h2 id="openai-authentication">OpenAI Authentication</h2>
+<p>Requires an <a href="https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety">OpenAI API key</a> to be exported to environment</p>
+<h2 id="setup">Setup</h2>
+<ol>
+<li>Create empty directory (hot-links) in this case</li>
+<li>Run ccds in directory</li>
+<li>Create empty Git repo</li>
+<li>Push entire directory into repo</li>
+<li>Creat empty Codepsace from repo</li>
+<li>Create venv in VS Code from requirements.txt</li>
+</ol>
+
+</body>
+</html>
