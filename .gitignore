@@ -5,6 +5,7 @@
 /data/external/*
 /data/processed/*
 /notebooks/*db
+mlflow.db
 
 # Logs
 /logs/*
