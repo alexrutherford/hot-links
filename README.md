@@ -28,11 +28,11 @@ There are some cavets such as only searching for articles that were published th
 
 ## High level steps
 
-Ideally, one would have access to a comprehensive database of articles to select appropriate links from. However I do not have that. So a corpus of articles must be developed. This need not be comprehensive i.e. all Guardian articles ever, but should (i) include the true article and (ii) should be of reasonable size to demonstrate the efficacy of the retrieval method.
+Ideally, one would have access to a comprehensive database of articles to select appropriate links from. However I do not have that. So a corpus of articles must be developed. This need not be comprehensive i.e. all Guardian articles ever, but should (i) include all linked articles from the focal article and (ii) should be of reasonable size to demonstrate the efficacy of the retrieval method.
 
 Firstly a set of seed articles is defined, using a dataset from Kaggle (the Official Guardian API doesn't seem stable enough to retrieve). The seed articles are placed in a vector store and links are substrings are extracted and stored in a flat file. The out-links from all seed articles are de-duplicated and the HTML content derived via (responsible) scraping. The body text and second generation out-links are extracted from this HTML. The body text is placed in the vector store and the links are also stored in a flat file. This process could contiue indefinitely, navigating the document link network. However it is expensive and not necessary for demonstrating the concept.
 
-Secondly....
+Secondly the articles are pushed into the OpenAI vector store.
 
 ## Initial Results
 
@@ -81,8 +81,13 @@ Mean score for zero ranked matches is 0.60.
 
 ## Model Comparison
 
-![Mean overlap of generated text](reports/figures/overlap_by_model.png "Compare models" )
-![Mean separation of generated text from real snippet](reports/figures/separation_by_model.png "Compare models" )
+This considers a few different metrics, each one saturates at different levels of performance. From simple vaidity error rate to rate of perfect anchor text matches. A fine-tuned gpt-4.1-mini model, fine tuned on 200 examples is also comapred.
+
+![Error rate of model output](reports/figures/errors_by_model.png "Compare models" )
+![Mean overlap of generated text from real anchor text](reports/figures/overlap_by_model.png "Compare models" )
+![Rate of partial overlap of generated and true anchor text](reports/figures/partial_matches_by_model.png "Compare models" )
+![Mean separation of generated and true anchor text](reports/figures/separation_by_model.png "Compare models" )
+![Rate of perfect matches generated and true anchor text](reports/figures/perfect_matches_by_model.png "Compare models" )
 
 ## Things to do
 
