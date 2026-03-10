@@ -98,8 +98,8 @@ Mean score for zero ranked matches is 0.60.
 - ~~Set up evaluation~~
 - How to set up batches (seems [not available](https://platform.openai.com/docs/api-reference/batch/create) to `vector_store.search` endpoint)
 - Experiment with models, prompts, sampling
-- Compare to supervised fine-tuning
-- Implement prompt cahcing: move static content i.e. document contents to beginning of prompt
+- ~~Compare to supervised fine-tuning~~
+- Implement prompt caching: move static content i.e. document contents to beginning of prompt
 
 ## Project Organization
 
