@@ -89,6 +89,17 @@ This considers a few different metrics, each one saturates at different levels o
 ![Mean separation of generated and true anchor text](reports/figures/separation_by_model.png "Compare models" )
 ![Rate of perfect matches generated and true anchor text](reports/figures/perfect_matches_by_model.png "Compare models" )
 
+<table>
+  <tr>
+    <td><img src="reports/figures/model_metrics_ft:gpt-4.1-mini.png" width="400"/></td>
+    <td><img src="reports/figures/model_metrics_gpt-4.1.png" width="400"/></td>
+  </tr>
+  <tr>
+    <td><img src="reports/figures/model_metrics_gpt-4.1-mini.png" width="400"/></td>
+    <td><img src="reports/figures/model_metrics_gpt-4.1-nano.png" width="400"/></td>
+  </tr>
+</table>
+
 ## Things to do
 
 - ~~Scrape a few recent articles to build up a validation set~~
@@ -104,7 +115,7 @@ This considers a few different metrics, each one saturates at different levels o
 - How to set up batches (seems [not available](https://platform.openai.com/docs/api-reference/batch/create) to `vector_store.search` endpoint)
 - Experiment with models, prompts, sampling
 - Compare to supervised fine-tuning
-- Implement prompt cahcing: move static content i.e. document contents to beginning of prompt
+- Implement prompt caching: move static content i.e. document contents to beginning of prompt
 
 ## Project Organization
 
