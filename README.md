@@ -4,7 +4,7 @@
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
 
-This is a Python project evaluating LLMs ability to automatically generate document hyperlinks using Guardian news articles as an exemplar.  
+This is a Python project evaluating LLMs ability to automatically generate document hyperlinks using Guardian news articles as an exemplar.  Results are summarised in [this short slide deck](https://docs.google.com/presentation/d/1y-3lcIoJdMEtOTyf0VXxJVzKE_XvXmzyLJU_vMFlF88/edit?usp=sharing)
 
 ## Problem Statement
 
